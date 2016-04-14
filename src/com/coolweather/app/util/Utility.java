@@ -9,9 +9,11 @@ import com.coolweather.app.model.Province;
 
 // handle response from server
 public class Utility {
+	public static final String TAG = "Utility";
 	// handle provinces data
 	public synchronized static boolean handleProvincesResponse(
 			CoolWeatherDB coolWeatherDB, String response) {
+		LogUtil.i(TAG, "*** response: " + response);
 		if (!TextUtils.isEmpty(response)) {
 			String[] provinces = response.split(",");
 			if (provinces != null && provinces.length > 0) {
@@ -32,6 +34,7 @@ public class Utility {
 	// handle cities data
 	public synchronized static boolean handleCitiesResponse(
 			CoolWeatherDB coolWeatherDB, String response, int provinceId) {
+		LogUtil.i(TAG, "*** provinceId: " + provinceId + " response: " + response);
 		if (!TextUtils.isEmpty(response)) {
 			String[] cities = response.split(",");
 			if (cities != null && cities.length > 0) {
@@ -52,6 +55,7 @@ public class Utility {
 	// handle counties data
 	public synchronized static boolean handleCountiesResponse(
 			CoolWeatherDB coolWeatherDB, String response, int cityId) {
+		LogUtil.i(TAG, "*** cityId: " + cityId + " response: " + response);
 		if (!TextUtils.isEmpty(response)) {
 			String[] counties = response.split(",");
 			if (counties != null && counties.length > 0) {

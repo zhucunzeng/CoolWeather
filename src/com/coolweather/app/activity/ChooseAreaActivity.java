@@ -18,6 +18,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Process;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -56,7 +57,7 @@ public class ChooseAreaActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.choose_area);
-		LogUtil.d(TAG, "onCrate");
+		LogUtil.i(TAG, "onCrate");
 		
 		mListView = (ListView) findViewById(R.id.lv_area_list);
 		mTitleText = (TextView) findViewById(R.id.tv_title);
@@ -69,6 +70,7 @@ public class ChooseAreaActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int index,
 					long arg3) {
 				// TODO Auto-generated method stub
+				LogUtil.i(TAG, "index: " + index);
 				if (mCurrentLevel == LEVEL_PROVINCE) {
 					mSelectedProvince = mProvinceList.get(index);
 					queryCities();
@@ -82,7 +84,7 @@ public class ChooseAreaActivity extends Activity {
 	}
 	
 	private void queryProvinces() {
-		LogUtil.d(TAG, "queryProvinces");
+		LogUtil.i(TAG, "queryProvinces");
 		mProvinceList = mCoolWeatherDB.loadProvince();
 		if (mProvinceList.size() > 0) {
 			mDataList.clear();
@@ -99,7 +101,7 @@ public class ChooseAreaActivity extends Activity {
 	}
 	
 	private void queryCities() {
-		LogUtil.d(TAG, "queryCities");
+		LogUtil.i(TAG, "queryCities");
 		mCityList = mCoolWeatherDB.loadCity(mSelectedProvince.getId());
 		if (mCityList.size() > 0) {
 			mDataList.clear();
@@ -116,7 +118,7 @@ public class ChooseAreaActivity extends Activity {
 	}
 
 	private void queryCounties() {
-		LogUtil.d(TAG, "queryCounties");
+		LogUtil.i(TAG, "queryCounties");
 		mCountyList = mCoolWeatherDB.loadCounty(mSelectedCity.getId());
 		if (mCountyList.size() > 0) {
 			mDataList.clear();
@@ -133,18 +135,25 @@ public class ChooseAreaActivity extends Activity {
 	}
 	
 	private void queryFromServer(final String code, final String type) {
-		LogUtil.d(TAG, "queryFromServer");
+		LogUtil.i(TAG, "queryFromServer, code: " + code + " type: " + type);
 		String address = null;
 		if (!TextUtils.isEmpty(code)) {
 			address = "http://www.weather.com.cn/data/list3/city" + code +".xml";
+//			if ("city".equals(type)) {
+//				address = "http://m.weather.com.cn/manage/citylist/provshi.html?id=101" + code;
+//			} else if ("county".equals(type)) {
+//				address = "http://m.weather.com.cn/manage/citylist/station.html?id=101" + code;
+//			}
 		} else {
 			address = "http://www.weather.com.cn/data/list3/city.xml";
+			//address = "http://m.weather.com.cn/manage/citylist/china.html";
 		}
 		showProgressDialog();
 		
 		HttpUtil.sendHttpGetRequest(address, new HttpCallbackListener() {
 			@Override
 			public void onFinish(String response) {
+				LogUtil.i(TAG, "onFinish, response: " + response);
 				// TODO Auto-generated method stub
 				boolean result = false;
 				if ("province".equals(type)) {
@@ -177,6 +186,7 @@ public class ChooseAreaActivity extends Activity {
 			
 			@Override
 			public void onError(Exception e) {
+				LogUtil.i(TAG, "onError");
 				// Back to main Thread
 				runOnUiThread(new Runnable() {
 					
@@ -191,7 +201,7 @@ public class ChooseAreaActivity extends Activity {
 	}
 	
 	private void showProgressDialog() {
-		LogUtil.d(TAG, "showProgressDialog");
+		LogUtil.i(TAG, "showProgressDialog");
 		if (mProgressDialog == null) {
 			mProgressDialog = new ProgressDialog(this);
 			mProgressDialog.setMessage("ÕýÔÚ¼ÓÔØ...");
@@ -201,7 +211,7 @@ public class ChooseAreaActivity extends Activity {
 	}
 	
 	private void closeProgressDialog() {
-		LogUtil.d(TAG, "closeProgressDialog");
+		LogUtil.i(TAG, "closeProgressDialog");
 		if (mProgressDialog != null) {
 			mProgressDialog.dismiss();
 		}
@@ -209,7 +219,7 @@ public class ChooseAreaActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		LogUtil.d(TAG, "onBackPressed");
+		LogUtil.i(TAG, "onBackPressed");
 		// Upon current level
 		if (mCurrentLevel == LEVEL_COUNTY) {
 			queryCities();
