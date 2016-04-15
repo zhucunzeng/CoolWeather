@@ -6,6 +6,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+//中国天气网  查询请求地址
+//http://www.weather.com.cn/data/list3/city.xml" ==> all provinces data in china
+//http://www.weather.com.cn/data/list3/city" + provinceCode +".xml" ==> all citise data of the province
+//http://www.weather.com.cn/data/list3/city" + cityCode +".xml" ==> all counties data of the city
+//http://www.weather.com.cn/data/list3/city" + countyCode +".xml" ==> weatherCode of the county
+//http://www.weather.com.cn/data/cityinfo" + weatherCode +".xml" ==> weather data that the county the weatherCode
+
 public class HttpUtil {
 	public static void sendHttpGetRequest(final String address,
 			final HttpCallbackListener listener) {
