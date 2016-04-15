@@ -1,5 +1,8 @@
 package com.coolweather.app.activity;
 
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+
 import com.coolweather.app.R;
 import com.coolweather.app.service.AutoUpdateService;
 import com.coolweather.app.util.HttpCallbackListener;
@@ -43,6 +46,10 @@ public class WeatherActivity extends Activity implements OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_weather);
 		initView();
+		
+		AdView adView = new AdView(this, AdSize.FIT_SCREEN);
+		LinearLayout llytAd = (LinearLayout) findViewById(R.id.llyt_ad);
+		llytAd.addView(adView);
 
 		String countyCode = getIntent().getStringExtra("county_code");
 		if (!TextUtils.isEmpty(countyCode)) {
