@@ -83,7 +83,7 @@ public class Utility {
 		return false;
 	}
 	
-	public static void handWeatherResponse(Context context, String response) {
+	public synchronized static void handWeatherResponse(Context context, String response) {
 		LogUtil.i(TAG, "handWeatherResponse, response: " + response);
 		try {
 			JSONObject jsonObject = new JSONObject(response);
@@ -101,7 +101,6 @@ public class Utility {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public static void saveWeatherInfo(Context context, String cityName, String weatherCode,
