@@ -52,13 +52,15 @@ public class ChooseAreaActivity extends Activity {
 	private City mSelectedCity = null;
 	private int mCurrentLevel = 0;
 	
+	private boolean isFromWeatherActivity = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean("city_selected", false)) {
+		if (prefs.getBoolean("city_selected", false) && !isFromWeatherActivity) {
 			Intent intent = new Intent(this, WeatherActivity.class);
 			startActivity(intent);
 			finish();
@@ -89,6 +91,7 @@ public class ChooseAreaActivity extends Activity {
 					queryCounties();
 				} else if (mCurrentLevel == LEVEL_COUNTY) {
 					String countyCode = mCountyList.get(index).getCountyCode();
+					LogUtil.i(TAG, "countyCode: " + countyCode);
 					Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
 					intent.putExtra("county_code", countyCode);
 					startActivity(intent);
@@ -242,6 +245,10 @@ public class ChooseAreaActivity extends Activity {
 		} else if (mCurrentLevel == LEVEL_CITY) {
 			queryProvinces();
 		} else {
+			if (isFromWeatherActivity) {
+				Intent intent = new Intent(this, WeatherActivity.class);
+				startActivity(intent);
+			}
 			finish();
 		}
 	}

@@ -3,6 +3,7 @@ package com.coolweather.app.activity;
 import com.coolweather.app.R;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
+import com.coolweather.app.util.LogUtil;
 import com.coolweather.app.util.Utility;
 
 import android.app.Activity;
@@ -36,6 +37,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		LogUtil.i(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_weather);
@@ -53,6 +55,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 	}
 
 	private void initView() {
+		LogUtil.i(TAG, "initView");
 		llytWeatherInfo = (LinearLayout) findViewById(R.id.llyt_weather_info);
 		tvCityName = (TextView) findViewById(R.id.tv_city_name);
 		tvPublishTime = (TextView) findViewById(R.id.tv_publish_time);
@@ -69,6 +72,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
+		LogUtil.i(TAG, "onClick");
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_switch_city:
@@ -92,22 +96,26 @@ public class WeatherActivity extends Activity implements OnClickListener {
 	}
 
 	private void queryWeatherCode(String countyCode) {
+		LogUtil.i(TAG, "queryWeatherCode, countyCode: " + countyCode);
 		String address = "http://www.weather.com.cn/data/list3/city"
 				+ countyCode + ".xml";
 		queryFromServer(address, "countyCode");
 	}
 
 	private void queryWeatherInfo(String weatherCode) {
+		LogUtil.i(TAG, "queryWeatherInfo, weatherCode: " + weatherCode);
 		String address = "http://www.weather.com.cn/data/cityinfo/"
-				+ "weatherCode" + ".html";
+				+ weatherCode + ".html";
 		queryFromServer(address, "weatherCode");
 	}
 
 	private void queryFromServer(final String address, final String type) {
+		LogUtil.i(TAG, "queryFromServer, address: " + address + " type: " + type);
 		HttpUtil.sendHttpGetRequest(address, new HttpCallbackListener() {
-
+			
 			@Override
 			public void onFinish(String response) {
+				LogUtil.i(TAG, "onFinish, response: " + response);
 				// TODO Auto-generated method stub
 				if ("countyCode".equals(type)) {
 					if (!TextUtils.isEmpty(response)) {
@@ -132,6 +140,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 
 			@Override
 			public void onError(Exception e) {
+				LogUtil.i(TAG, "onError");
 				// TODO Auto-generated method stub
 				runOnUiThread(new Runnable() {
 
@@ -146,6 +155,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 	}
 
 	private void showWeather() {
+		LogUtil.i(TAG, "showWeather");
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 

@@ -12,7 +12,8 @@
             android:id="@+id/btn_switch_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true" />
+            android:layout_alignParentLeft="true"
+            android:text="切换城市" />
         
         <TextView
             android:id="@+id/tv_city_name"
@@ -26,7 +27,8 @@
             android:id="@+id/btn_refresh_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:text="刷新" />
         
     </RelativeLayout>
 
